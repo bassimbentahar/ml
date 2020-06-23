@@ -44,13 +44,13 @@ const Sidebar = props => {
 
   const pages = [
     {
-      title: 'Etudiants',
-      href: '/students',
+      title: 'Stratégies',
+      href: '/Strategies',
       icon: <DashboardIcon />
     },
     {
-      title: 'Cours',
-      href: '/Cours',
+      title: 'Retards',
+      href: 'Retards',
       icon: <PeopleIcon />
     },
     {

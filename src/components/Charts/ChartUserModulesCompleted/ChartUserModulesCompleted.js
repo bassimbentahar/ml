@@ -15,40 +15,31 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const ChartUserSituation=(props)=>{
+const ChartUserModulesCompleted=({completionData})=>{
     const classes = useStyles();
     const theme = useTheme();
 
 
 
-    const positionsData=props.positionsData
+    completionData={...completionData}
 
     let lineChart=null;
-    if(positionsData) {
+    if(Object.keys(completionData).length !== 0) {
 
         const colorsTest = [];
-        console.log(positionsData)
-        for (let i = 0; i < positionsData.strategiesList.length; i++) {
-            if (positionsData.strategiesList[i].testStatus === "SUCCESS_OK") {
-                colorsTest.push(colors.green[600])
+        console.log(completionData)
 
-            } else if (positionsData.strategiesList[i].testStatus === "SUCCESS_KO") {
-                colorsTest.push(colors.red[600])
-            } else {
-                colorsTest.push(colors.grey[600])
-            }
-        }
 
-         lineChart = (
-            positionsData.length !== 0
+        lineChart = (
+            completionData.length !== 0
                 ? (<Line
                     data={
                         {
-                            labels: positionsData.strategiesList.map((e, i) => i),
+                            labels: Object.keys(completionData.delaysBefore),
                             datasets: [{
-                                data: positionsData.strategiesList.map(({strategy}) => strategy),
+                                data: Object.values(completionData.delaysBefore),
                                 //       la même chose que data:dailyData.map((e)=>e.confirmed),
-                                label: positionsData.userName,
+                                label: completionData.userName,
                                 fill: false,
                                 backgroundColor: colors.blue[600],
                                 borderColor: colors.blue[600],
@@ -95,24 +86,9 @@ const ChartUserSituation=(props)=>{
                                     labelString: 'Stratégies'
                                 },
                                 ticks: {
-                                    callback: function (label, index, labels) {
-                                        if (label === 1) {
-                                            return "x";
-                                        } else if (label === 2) {
-                                            return "M";
-                                        } else if (label === 3) {
-                                            return "O"
-                                        } else if (label === 4) {
-                                            return "MO";
-                                        } else if (label === 5) {
-                                            return "OT";
-                                        } else if (label === 6) {
-                                            return "MOT"
-                                        }
-                                    },
+
                                     beginAtZero: true,
-                                    min: 0,
-                                    max: 6
+                                    min: 0
                                 }
 
                             }]
@@ -137,6 +113,6 @@ const ChartUserSituation=(props)=>{
         </div>
     )
 }
-export default ChartUserSituation;
+export default ChartUserModulesCompleted;
 
 

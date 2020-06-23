@@ -5,7 +5,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import theme from './theme';
 import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
-import Grid from './Containers/central/Students'
+import Grid from './Containers/central/Strategies'
 import Routes from './Routes';
 
 

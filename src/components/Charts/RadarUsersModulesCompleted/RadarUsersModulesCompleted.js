@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const RadarUserSituation=({positionsData})=>{
+const RadarUsersModulesCompleted=({positionsData})=>{
     const classes = useStyles();
     positionsData=[...positionsData]
 
@@ -25,19 +25,14 @@ const RadarUserSituation=({positionsData})=>{
         let datasets = [];
 
 
-
         for (let i = 0; i < positionsData.length; i++) {
-            const suivi = Object.values({...positionsData[i].pourcentagesStrategy}) ;
             const StudentName = positionsData[i].userName;
+            colorsLine.push(getRandomColor())
 
-            if (suivi.length !== 0) {
-                colorsLine.push(getRandomColor())
 
                 let data = {
-                    data: suivi,
+                    data: [positionsData[i].completed,positionsData[i].notAttempted,positionsData[i].incompleted],
                     //       la même chose     que            data:dailyData.map((e)=>e.confirmed),
-
-
                     label: StudentName,
                     borderColor: colorsLine[i],
                     pointBorderColor: '#fff',
@@ -50,7 +45,7 @@ const RadarUserSituation=({positionsData})=>{
                 }
                 colorsTest = []
                 datasets.push(data);
-            }
+
         }
      radarChart = (
         positionsData.length!== 0
@@ -60,7 +55,7 @@ const RadarUserSituation=({positionsData})=>{
 
     data={
                     {
-                        labels: ['x', 'M', 'O', 'MO', 'OT', 'MOT'],
+                        labels: [ 'Completed','Not Attempted', 'Incompleted'],
                         datasets: datasets,
 
                     }
@@ -80,7 +75,7 @@ const RadarUserSituation=({positionsData})=>{
                     },
                     title: {
                         display: true,
-                        text: 'Radar des pourcentages par stratégies',
+                        text: 'Complétude des modules',
                     },
                     scale: {
 
@@ -119,6 +114,6 @@ function getRandomColor() {
     return color;
 }
 
-export default RadarUserSituation;
+export default RadarUsersModulesCompleted;
 
 

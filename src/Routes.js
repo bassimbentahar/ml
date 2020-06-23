@@ -4,7 +4,8 @@ import { Switch, Redirect } from 'react-router-dom';
 import RouteWithLayout  from './components/RouteWithLayout/RouteWithLayout';
 import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
 
-import Students from './Containers/central/Students';
+import Strategies from './Containers/central/Strategies';
+import Retards from './Containers/central/Retards';
 import NotFound from "./components/NotFound/NotFound";
 const Routes = () => {
   return (
@@ -12,14 +13,21 @@ const Routes = () => {
       <Redirect
         exact
         from="/"
-        to="/students"
+        to="/Strategies"
       />
       <RouteWithLayout
-        component={Students}
+        component={Strategies}
         exact
         layout={MainLayout}
-        path="/students"
+        path="/Strategies"
       />
+
+        <RouteWithLayout
+            component={Retards}
+            exact
+            layout={MainLayout}
+            path="/Retards"
+        />
         <RouteWithLayout
             component={NotFound}
             exact

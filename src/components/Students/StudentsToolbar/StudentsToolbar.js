@@ -47,6 +47,7 @@ const StudentsToolbar = props => {
   },[])
 
   const handleChangeChart = (event, v) => {
+    console.log(v+"nnnnnnnnnnnnnnnnn")
     setSelectedChart(v);
 
     props.changechart(v)

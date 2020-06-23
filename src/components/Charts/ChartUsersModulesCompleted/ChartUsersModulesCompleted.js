@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-const ChartUsersSituation=({positionsData})=>{
+const ChartUsersModulesCompleted=({completionsData})=>{
     const classes = useStyles();
 
     const theme = useTheme();
@@ -32,66 +32,52 @@ const ChartUsersSituation=({positionsData})=>{
     const[userId, setUserId]=useState({});
     //setUserId({userId:props.userId})
 
-    positionsData=[...positionsData]
+    completionsData=[...completionsData]
 
 
 
     let lineChart=null;
 
-    if(positionsData.length!=0) {
-        let colorsTest = [];
-        let colorsLine = []
+    if(completionsData.length!=0) {
+        let colorsLine = [];
         let datasets = [];
 
         let coursesList = [];
         // get the list of courses for the x axis
-        let suiviElement = positionsData.find(e => e.strategiesList.length !== 0);
-        if (suiviElement) coursesList = suiviElement.strategiesList.map((e, i) => i + 1);
+        let suiviElement = completionsData.find(e => e.delaysBefore.length !== 0);
+        //console.log(suiviElement.delaysBefore)
+        //if (suiviElement) coursesList = suiviElement.delaysBefore.map((e, i) => i + 1);
+        Object.keys(suiviElement.delaysBefore)
+            .forEach(function eachKey(key) {
+                coursesList.push(key)
+            });
 
-        for (let i = 0; i < positionsData.length; i++) {
 
-            const suivi = [...positionsData[i].strategiesList];
-            const StudentName = positionsData[i].userName;
+        for (let i = 0; i < completionsData.length; i++) {
+
+            const suivi = Object.values({...completionsData[i].delaysBefore});
+            const StudentName = completionsData[i].userName;
 
             if (suivi.length !== 0) {
                 for (let j = 0; j < suivi.length; j++) {
-                    if (suivi[j].testStatus === "SUCCESS_OK") {
-                        colorsTest.push(colors.green[600])
-
-                    } else if (suivi[j].testStatus === "SUCCESS_KO") {
-                        colorsTest.push(colors.red[600])
-                    } else {
-                        colorsTest.push(colors.grey[600])
-                    }
                     colorsLine.push(getRandomColor())
                 }
                 let data = {
-                    data: suivi.map(({strategy}) => strategy),
+                    data:suivi,
                     //       la même chose     que            data:dailyData.map((e)=>e.confirmed),
                     label: StudentName,
                     fill: false,
                     borderColor: colorsLine[i],
                     backgroundColor: colors.amber,
-                    pointBackgroundColor: colorsTest,
                     pointBorderWidth: 1,
-                    pointHoverRadius: 10,
-                    pointHoverBackgroundColor: colorsTest,
-                    pointHoverBorderColor: 'rgba(220,220,220,1)',
-                    pointHoverBorderWidth: 2,
-                    pointRadius:4,
-                    pointHitRadius: 15,
-                    showLine: true,
-                    pointStrokeColor: "#fff",
-                    pointHighlightFill: "#fff",
-                    pointHighlightStroke: "rgba(151,187,205,1)",
+
                 }
-                colorsTest = []
                 datasets.push(data);
             }
         }
 
         lineChart = (
-            positionsData.length !== 0
+            completionsData.length !== 0
                 ? (<Line
                         data={
                             {
@@ -102,11 +88,10 @@ const ChartUsersSituation=({positionsData})=>{
                         options={{
                             showScale: true,
                             pointDot: true,
-                            showLines: true,
 
                             title: {
                                 display: true,
-                                text: 'Stratégie  '
+                                text: 'Modules en retard '
                             },
 
                             legend: {
@@ -121,21 +106,7 @@ const ChartUsersSituation=({positionsData})=>{
                             },
 
                             scales: {
-                                yAxes: [{
-                                    scaleLabel: {
-                                        display: true,
-                                        labelString: 'Stratégies'
-                                    },
-                                    ticks: {
-                                        callback: function (label, index, labels) {
-                                            return getLabelModul(label)
-                                        },
-                                        beginAtZero: true,
-                                        min: 0,
-                                        max: 6
-                                    }
 
-                                }]
                             }
 
                         }}
@@ -187,6 +158,6 @@ function getLabelModul(label) {
     }
 }
 
-export default ChartUsersSituation;
+export default ChartUsersModulesCompleted;
 
 
