@@ -8,7 +8,6 @@ const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
         justifyContent: 'center',
-        width:'75%',
         marginRight: theme.spacing(1),
         marginTop: theme.spacing(1)
     },
@@ -44,16 +43,18 @@ const ChartUsersSituation=({positionsData})=>{
         let datasets = [];
 
         let coursesList = [];
-        // get the list of courses for the x axis
-        let suiviElement = positionsData.find(e => e.strategiesList.length !== 0);
-        if (suiviElement) coursesList = suiviElement.strategiesList.map((e, i) => i + 1);
 
+
+        console.log(positionsData)
+        let maxInd=0;
         for (let i = 0; i < positionsData.length; i++) {
 
             const suivi = [...positionsData[i].strategiesList];
             const StudentName = positionsData[i].userName;
-
             if (suivi.length !== 0) {
+                if(maxInd<suivi.length) maxInd=i;
+//                console.log(suivi.map(({strategy}) => strategy))
+
                 for (let j = 0; j < suivi.length; j++) {
                     if (suivi[j].testStatus === "SUCCESS_OK") {
                         colorsTest.push(colors.green[600])
@@ -64,6 +65,7 @@ const ChartUsersSituation=({positionsData})=>{
                         colorsTest.push(colors.grey[600])
                     }
                     colorsLine.push(getRandomColor())
+
                 }
                 let data = {
                     data: suivi.map(({strategy}) => strategy),
@@ -88,18 +90,26 @@ const ChartUsersSituation=({positionsData})=>{
                 colorsTest = []
                 datasets.push(data);
             }
-        }
+            coursesList.push(i+1);
+            coursesList = suivi.map((e, i) => i + 1);
 
+        }
+        // get the list of courses for the x axis
+        let elementWithMaxCourses = positionsData[maxInd];
+        //console.log(suiviElement)
+        if (elementWithMaxCourses) coursesList = elementWithMaxCourses.strategiesList.map((e, i) => i + 1);
         lineChart = (
             positionsData.length !== 0
                 ? (<Line
                         data={
                             {
-                                labels: coursesList,
+                                labels: coursesList ,
                                 datasets: datasets
                             }
                         }
                         options={{
+                            maintainAspectRatio: true,
+
                             showScale: true,
                             pointDot: true,
                             showLines: true,
@@ -111,7 +121,7 @@ const ChartUsersSituation=({positionsData})=>{
 
                             legend: {
                                 display: true,
-                                position: 'left',
+                                position: 'top',
                                 labels: {
                                     boxWidth: 50,
                                     fontSize: 10,

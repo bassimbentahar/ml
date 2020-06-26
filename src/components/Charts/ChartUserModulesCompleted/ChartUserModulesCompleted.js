@@ -27,7 +27,12 @@ const ChartUserModulesCompleted=({completionData})=>{
     if(Object.keys(completionData).length !== 0) {
 
         const colorsTest = [];
-        console.log(completionData)
+
+        let coursesList = [];
+        Object.keys(completionData.delaysBefore)
+            .forEach(function eachKey(key) {
+                coursesList.push(key.substr(0,10))
+            });
 
 
         lineChart = (
@@ -35,7 +40,7 @@ const ChartUserModulesCompleted=({completionData})=>{
                 ? (<Line
                     data={
                         {
-                            labels: Object.keys(completionData.delaysBefore),
+                            labels: coursesList,
                             datasets: [{
                                 data: Object.values(completionData.delaysBefore),
                                 //       la même chose que data:dailyData.map((e)=>e.confirmed),
@@ -49,11 +54,12 @@ const ChartUserModulesCompleted=({completionData})=>{
                                 pointHoverBackgroundColor: colorsTest,
                                 pointHoverBorderColor: 'rgba(220,220,220,1)',
                                 pointHoverBorderWidth: 2,
-                                pointRadius:4,
                                 pointHitRadius: 15,
                                 showLine: true,
                                 pointStrokeColor: "#fff",
                                 pointHighlightFill: "#fff",
+                                pointRadius:1,
+
                             }
                             ],
 

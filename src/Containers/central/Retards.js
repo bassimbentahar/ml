@@ -16,10 +16,15 @@ class Retards extends Component{
         users:[],
         allUser:true,
         selectedUserId:'',
-        selectedChart:'graphe'
+        selectedChart:'graphe',
     }
 
     componentDidMount() {
+        this.selecttAll("")
+    }
+
+    selecttAll=(selectedDate)=>{
+
         const fetchAPIUsers=async ()=>{
             this.setState({
                 users:await getUsers()
@@ -29,7 +34,7 @@ class Retards extends Component{
 
         const fetchAllCompletions=async ()=>{
             this.setState({
-                moduleUsersCompleted:await getCompletionModules("all")
+                moduleUsersCompleted:await getCompletionModules("all",selectedDate)
             })
         }
         fetchAllCompletions();
@@ -39,27 +44,26 @@ class Retards extends Component{
 
         const fetchAllComppletionPourcentageAPI=async ()=>{
             this.setState({
-                moduleUsersPourcentagesCompleted:await getCompletionPourcentagesModules("all")
+                moduleUsersPourcentagesCompleted:await getCompletionPourcentagesModules("all",selectedDate)
             })
         }
         fetchAllComppletionPourcentageAPI();
-
     }
 
-
-    changeStudent=(id=this.state.selectedUserId)=>{
+    changeStudent=(id=this.state.selectedUserId, selectedDate='')=>{
         if(id!=="all") {
             this.setState({allUser:false})
             const fetchAPISuivis = async () => {
+                console.log(this.state.selectedDate);
                 this.setState({
-                    moduleUserCompleted: await getCompletionModules(id)
+                    moduleUserCompleted: await getCompletionModules(id,selectedDate)
                 })
             }
             fetchAPISuivis();
 
             const fetchAPIPourcentage = async () => {
                 this.setState({
-                    moduleUserPourcentagesCompleted: await getCompletionPourcentagesModules(id)
+                    moduleUserPourcentagesCompleted: await getCompletionPourcentagesModules(id,selectedDate)
                 })
             }
             fetchAPIPourcentage();
@@ -74,6 +78,14 @@ class Retards extends Component{
     changeChart=(i)=>{
         this.setState({selectedChart:this.state.labelsTabs[i]})
     }
+    setDate=(selectedDate)=>{
+
+        if(!this.state.allUser){
+            this.changeStudent(this.state.selectedUserId,selectedDate)
+        }else{
+            this.selecttAll(selectedDate)
+        }
+    }
 
     render() {
         const styles={
@@ -82,18 +94,22 @@ class Retards extends Component{
 
         return(
             <React.Fragment>
-                <StudentsToolbar labelstabs={this.state.labelsTabs} changestudent={this.changeStudent} changechart ={this.changeChart} users={this.state.users} />
+                <StudentsToolbar labelstabs={this.state.labelsTabs}
+                                 changestudent={this.changeStudent}
+                                 setDate ={this.setDate}
+                                 changechart ={this.changeChart}
+                                 users={this.state.users} />
                 <Grid container >
                     <Grid item md>
                         <RightPanel
-                                    topic={this.state.topic}
-                                    allUser= {this.state.allUser}
-                                    selectedChart={this.state.selectedChart}
-                                    graphOneUser={this.state.moduleUserCompleted}
-                                    graphAllUsers={this.state.moduleUsersCompleted }
-                                    radarOneUser={this.state.moduleUserPourcentagesCompleted }
-                                    radarAllUsers={this.state.moduleUsersPourcentagesCompleted}
-                                    styles={styles}
+                            topic={this.state.topic}
+                            allUser= {this.state.allUser}
+                            selectedChart={this.state.selectedChart}
+                            graphOneUser={this.state.moduleUserCompleted}
+                            graphAllUsers={this.state.moduleUsersCompleted }
+                            radarOneUser={this.state.moduleUserPourcentagesCompleted }
+                            radarAllUsers={this.state.moduleUsersPourcentagesCompleted}
+                            styles={styles}
                         />
 
                     </Grid>

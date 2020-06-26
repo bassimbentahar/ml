@@ -7,10 +7,14 @@ import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import TextField from "@material-ui/core/TextField";
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import { KeyboardDatePicker } from "@material-ui/pickers";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    marginLeft:10
+    marginLeft:10,
+
   },
   row: {
     height: '42px',
@@ -22,6 +26,13 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
 
+  datepicker:{
+    marginLeft:10,
+    height: '50px',
+
+
+
+  },
   searchInput: {
     marginRight: theme.spacing(1)
   }
@@ -32,8 +43,13 @@ const useStyles = makeStyles(theme => ({
 const StudentsToolbar = props => {
   const { className, ...rest } = props;
 
+  let date = new Date();
+
+
+
   const[selectedUser, setSelectedUser]=useState({value:''});
   const[selectedChart, setSelectedChart]=useState(0);
+  const[selectedDate, setSelectedDate]=useState(new Date());
 
   const classes = useStyles();
 
@@ -47,11 +63,15 @@ const StudentsToolbar = props => {
   },[])
 
   const handleChangeChart = (event, v) => {
-    console.log(v+"nnnnnnnnnnnnnnnnn")
     setSelectedChart(v);
 
     props.changechart(v)
   };
+  const handleDateChange=(event,v)=>{
+
+    setSelectedDate(new Date(`${event.getMonth()+1}/${event.getDate()}/${event.getFullYear()}`));
+    props.setDate(v);
+  }
   return (
       <div
           {...rest}
@@ -77,6 +97,26 @@ const StudentsToolbar = props => {
               getOptionSelected={(option, value) => option.id === value.id}
               renderInput={(params) => <TextField {...params} label="introduire un étudiant" variant="outlined" />}
           />
+          <Paper className={classes.datepicker}>
+
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+                disableToolbar
+                animateYearScrolling
+                variant="inline"
+                format="dd/MM/yyyy"
+                id="date-picker-inline"
+                label="Jusqu'au"
+                value={selectedDate}
+                onChange={handleDateChange}
+                allowKeyboardControl
+                autoOk
+                KeyboardButtonProps = {{
+                  'aria-label': 'change date',
+                }}
+            />
+          </MuiPickersUtilsProvider>
+          </Paper>
 
           <Paper className={classes.root}>
             <Tabs

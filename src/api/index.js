@@ -3,36 +3,37 @@ import axios from 'axios';
 const url='http://localhost:8080/';
 
 
-export const getSituations=async (id)=>{
+export const getSituations=async (id,selectedDate)=>{
+    console.log(selectedDate)
     try {
-        const {data}= id ==="all"? await axios.get(`${url}/users/suivi`): await axios.get(`${url}/users/${id}/suivi`);
+        const {data}= id ==="all"? await axios.get(`${url}/users/suivi?maxDate=${selectedDate}`): await axios.get(`${url}/users/${id}/suivi?maxDate=${selectedDate}`);
         return data;
     }catch (error) {
         console.log(error)
     }
 }
 
-export const getPourcentages=async (id)=>{
+export const getPourcentages=async (id,selectedDate)=>{
     try {
-        const {data}= id ==="all"? await axios.get(`${url}/users/suiviPourcentage`): await axios.get(`${url}/users/${id}/suiviPourcentage`);
+        const {data}= id ==="all"? await axios.get(`${url}/users/suiviPourcentage?maxDate=${selectedDate}`): await axios.get(`${url}/users/${id}/suiviPourcentage?maxDate=${selectedDate}`);
         return data;
     }catch (error) {
         console.log(error)
     }
 }
 
-export const getCompletionPourcentagesModules=async (id)=>{
+export const getCompletionPourcentagesModules=async (id,selectedDate)=>{
     try {
-        const {data}= id ==="all"? await axios.get(`${url}/users/completionPourcentagesModules`): await axios.get(`${url}/users/${id}/completionPourcentagesModules`);
+        const {data}= id ==="all"? await axios.get(`${url}/users/completionPourcentagesModules?maxDate=${selectedDate}`): await axios.get(`${url}/users/${id}/completionPourcentagesModules?maxDate=${selectedDate}`);
         return data;
     }catch (error) {
         console.log(error)
     }
 }
 
-export const getCompletionModules=async (id)=>{
+export const getCompletionModules=async (id,selectedDate)=>{
     try {
-        const {data}= id ==="all"? await axios.get(`${url}/users/completionModules`): await axios.get(`${url}/users/${id}/completionModules`);
+        const {data}= id ==="all"? await axios.get(`${url}/users/completionModules?maxDate=${selectedDate}`): await axios.get(`${url}/users/${id}/completionModules?maxDate=${selectedDate}`);
         return data;
     }catch (error) {
         console.log(error)

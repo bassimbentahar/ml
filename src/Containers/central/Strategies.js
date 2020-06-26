@@ -21,6 +21,10 @@ class Strategies extends Component{
     }
 
     componentDidMount() {
+    this.selecttAll('');
+    }
+
+    selecttAll=(selectedDate)=> {
         console.log("componentDidMount")
         const fetchAPIUsers=async ()=>{
             this.setState({
@@ -31,36 +35,32 @@ class Strategies extends Component{
 
         const fetchAllSuivisAPI=async ()=>{
             this.setState({
-                positionsAllSuivisData:await getSituations("all")
+                positionsAllSuivisData:await getSituations("all",selectedDate)
             })
         }
         fetchAllSuivisAPI();
-        console.log("allsuivis "+this.state.positionsAllSuivisData)
 
 
         const fetchAllSuivisPoucentagesAPI=async ()=>{
             this.setState({
-                positionsAllPourcentageSuivisData:await getPourcentages("all")
+                positionsAllPourcentageSuivisData:await getPourcentages("all",selectedDate)
             })
         }
         fetchAllSuivisPoucentagesAPI();
-        console.log("allPourcentage "+this.state.positionsAllPourcentageSuivisData)
     }
-
-
-    changeStudent=(id=this.state.selectedUserId)=>{
+    changeStudent=(id=this.state.selectedUserId, selectedDate='')=>{
         if(id!=="all") {
             this.setState({allUser:false})
             const fetchAPISuivis = async () => {
                 this.setState({
-                    positionUserSuivisData: await getSituations(id)
+                    positionUserSuivisData: await getSituations(id,selectedDate)
                 })
             }
             fetchAPISuivis();
 
             const fetchAPIPourcentage = async () => {
                 this.setState({
-                    positionsUserPourcentageData: await getPourcentages(id)
+                    positionsUserPourcentageData: await getPourcentages(id,selectedDate)
                 })
             }
             fetchAPIPourcentage();
@@ -76,6 +76,15 @@ class Strategies extends Component{
         this.setState({selectedChart:this.state.labelsTabs[i]})
     }
 
+    setDate=(selectedDate)=>{
+        console.log(selectedDate+"........................................")
+        if(!this.state.allUser){
+            this.changeStudent(this.state.selectedUserId,selectedDate)
+        }else{
+            this.selecttAll(selectedDate)
+        }
+    }
+
     render() {
         const styles={
             Paper:{padding:100, marginTop:10, marginBottom:10, marginLeft:10}
@@ -83,7 +92,12 @@ class Strategies extends Component{
 
         return(
             <React.Fragment>
-                <StudentsToolbar labelstabs={this.state.labelsTabs} changestudent={this.changeStudent} changechart ={this.changeChart} users={this.state.users} />
+                <StudentsToolbar
+                    labelstabs={this.state.labelsTabs}
+                    setDate ={this.setDate}
+                    changestudent={this.changeStudent}
+                    changechart ={this.changeChart}
+                    users={this.state.users} />
                 <Grid container >
                     <Grid item md>
                         <RightPanel

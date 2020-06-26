@@ -8,7 +8,6 @@ const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
         justifyContent: 'center',
-        width:'75%',
         marginRight: theme.spacing(1),
         marginTop: theme.spacing(1)
     },
@@ -49,7 +48,7 @@ const ChartUsersModulesCompleted=({completionsData})=>{
         //if (suiviElement) coursesList = suiviElement.delaysBefore.map((e, i) => i + 1);
         Object.keys(suiviElement.delaysBefore)
             .forEach(function eachKey(key) {
-                coursesList.push(key)
+                coursesList.push(key.substr(0,10))
             });
 
 
@@ -70,6 +69,8 @@ const ChartUsersModulesCompleted=({completionsData})=>{
                     borderColor: colorsLine[i],
                     backgroundColor: colors.amber,
                     pointBorderWidth: 1,
+                    pointRadius:1,
+
 
                 }
                 datasets.push(data);
@@ -96,7 +97,7 @@ const ChartUsersModulesCompleted=({completionsData})=>{
 
                             legend: {
                                 display: true,
-                                position: 'left',
+                                position: 'top',
                                 labels: {
                                     boxWidth: 50,
                                     fontSize: 10,
